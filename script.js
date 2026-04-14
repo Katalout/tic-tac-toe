@@ -121,10 +121,61 @@ function GameController(
 
             /*  This is where we would check for a winner and handle that logic,
                   such as a win message. */
+            function checkWin() {
+                //3 in a row?
+                let threeX = false;
+                let threeO = false;
+                let tie = false;
 
-            // Switch player turn
-            switchPlayerTurn();
-            printNewRound();
+                const boardWithCellValues = function () { return board.getBoard().map((row) => row.map((cell) => cell.getValue())); };
+
+                const transpose = function (grid) {
+                    return grid[0].map(
+                        (_, c) => grid.map(
+                            row => row[c]
+                        )
+                    )
+                };
+
+                const atlok = function () {
+                    let arrayofatlok = [];
+                    let board = boardWithCellValues();
+                    arrayofatlok.push([board[0][0], board[1][1], board[2][2]], [board[0][2], board[1][1], board[2][0]]);
+                    return arrayofatlok;
+                };
+
+                const switched = transpose(boardWithCellValues());
+                const boardRowsColumns = switched.concat(boardWithCellValues(), atlok());
+                //akkor most ezt add hozzá i guess? hogy sporoljunk?
+
+                const boardToStrings = boardRowsColumns
+                    .map((row) => row.join(""));
+
+                if (boardToStrings.filter((string) => string.includes("_")).length === 0) tie = true;
+
+                if (boardToStrings.filter((string) => string.includes("XXX")).length > 0) threeX = true;
+
+                if (boardToStrings.filter((string) => string.includes("OOO")).length > 0) threeO = true;
+
+                if (threeX) {
+                    console.log("Game over! Winner is Player One!");
+                    return true;
+                }
+                else if (threeO) {
+                    console.log("Game over! Winner is Player Two!");
+                    return true;
+                }
+                else if (tie) {
+                    console.log("Game over! It's a tie!");
+                    return true;
+                }
+                else return false;
+            };
+
+            if (!checkWin()) {
+                switchPlayerTurn();
+                printNewRound()
+            }
         }
         else console.log(`${getActivePlayer().name}'s turn.`);
     };
