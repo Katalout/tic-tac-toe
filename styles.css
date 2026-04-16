@@ -1,3 +1,24 @@
-body {
-    color: blue;
+body,
+html,
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(191, 191, 193);
+}
+
+h1 {
+    color: red;
+}
+
+.board {
+    border: 2px solid white;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 30px);
+    grid-template-rows: repeat(3, 30px);
+}
+
+.cell {
+    border: 2px solid blue;
+    padding: 10px;
 }

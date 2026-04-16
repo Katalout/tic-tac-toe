@@ -146,6 +146,30 @@ function GameController(
     }
 
     announceTurn();
-    return { playRound, getActivePlayer, resetGame }
+    return { playRound, getActivePlayer, resetGame, getBoard: board.getBoard }
 }
-const game = GameController("Emez", "Amaz");
+
+function UIcontroller() {
+    const game = GameController("Emez", "Amaz");
+    const texth1 = document.querySelector(".text");
+    const boardDiv = document.querySelector(".board");
+
+    function updateScreen() {
+        boardDiv.innerHTML = "";
+        const board = game.getBoard();
+        let activePlayer = game.getActivePlayer();
+        texth1.textContent = `It is ${activePlayer.name}'s turn.`;
+        board.forEach((row, rowindex) => row.forEach((cell, columnindex) => {
+            let button = document.createElement("button");
+            button.classList.add("cell");
+            button.dataset.column = columnindex;
+            button.dataset.row = rowindex;
+            button.textContent = cell.getValue();
+            boardDiv.appendChild(button);
+
+        }))
+
+    }
+    updateScreen();
+}
+UIcontroller();
