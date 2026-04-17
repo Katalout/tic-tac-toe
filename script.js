@@ -6,6 +6,7 @@ function Gameboard() {
     const rows = 3;
     const columns = 3;
     const board = [];
+    let logger = "";
 
     for (let i = 0; i < rows; i++) {
         let row = [];
@@ -26,18 +27,21 @@ function Gameboard() {
         const targetCell = board[row][column];
         if (targetCell.getValue() === "_") {
             targetCell.addToken(token);
+            logger = "mkay";
             return true;
         }
         else {
             console.log("Invalid move, try again");
+            logger = "Invalid move, try again";
             return false;
         }
     }
     const resetBoard = function () {
         board.forEach((row) => row.forEach((cell) => cell.addToken("_")))
     };
+    const getLogger = () => logger;
 
-    return { getBoard, printBoard, placeToken, resetBoard }
+    return { getBoard, printBoard, placeToken, resetBoard, getLogger }
 
 }
 
@@ -146,19 +150,23 @@ function GameController(
     }
 
     announceTurn();
-    return { playRound, getActivePlayer, resetGame, getBoard: board.getBoard }
+    return { playRound, getActivePlayer, resetGame, getBoard: board.getBoard, getLogger: board.getLogger }
 }
 
 function UIcontroller() {
     const game = GameController("Emez", "Amaz");
     const texth1 = document.querySelector(".text");
+    const loggerp = document.querySelector(".logger");
     const boardDiv = document.querySelector(".board");
+
+    const updateText = (text) => texth1.textContent = text;
 
     function updateScreen() {
         boardDiv.innerHTML = "";
         const board = game.getBoard();
         let activePlayer = game.getActivePlayer();
         texth1.textContent = `It is ${activePlayer.name}'s turn.`;
+        loggerp.textContent = game.getLogger();
         board.forEach((row, rowindex) => row.forEach((cell, columnindex) => {
             let button = document.createElement("button");
             button.classList.add("cell");
@@ -166,10 +174,21 @@ function UIcontroller() {
             button.dataset.row = rowindex;
             button.textContent = cell.getValue();
             boardDiv.appendChild(button);
-
         }))
 
     }
+    function clicker(event) {
+        event.stopPropagation();
+        let button = event.target;
+        console.log(button);
+        if (!button.dataset.row) return;
+        game.playRound(button.dataset.row, button.dataset.column);
+        console.log("target before updating screen: " + button.dataset.row);
+        updateScreen();
+        console.log("target after updating screen: " + button.dataset.row);
+    }
+    boardDiv.addEventListener("click", clicker);
     updateScreen();
+    return { updateText }
 }
 UIcontroller();
