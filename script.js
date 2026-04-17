@@ -27,7 +27,7 @@ function Gameboard() {
         const targetCell = board[row][column];
         if (targetCell.getValue() === "_") {
             targetCell.addToken(token);
-            logger = "mkay";
+            logger = "";
             return true;
         }
         else {
@@ -40,8 +40,9 @@ function Gameboard() {
         board.forEach((row) => row.forEach((cell) => cell.addToken("_")))
     };
     const getLogger = () => logger;
+    const setLogger = (text) => logger = text;
 
-    return { getBoard, printBoard, placeToken, resetBoard, getLogger }
+    return { getBoard, printBoard, placeToken, resetBoard, getLogger, setLogger }
 
 }
 
@@ -77,7 +78,7 @@ function GameController(
 
     function announceTurn() {
         board.printBoard();
-        console.log(`It is ${getActivePlayer().name}'s turn.`)
+        console.log(`It is ${getActivePlayer().name}'s turn. (${getActivePlayer().token})`)
     }
 
     function resetGame() {
@@ -89,15 +90,16 @@ function GameController(
 
     function playRound(row, column) {
         if (board.placeToken(row, column, activePlayer.token)) {
-            console.log(`Placing ${getActivePlayer().name}'s token:${getActivePlayer().token} to cell ${row}/${column}.`);
+            let logger = `Placed ${getActivePlayer().name}'s token:${getActivePlayer().token} to cell ${row}/${column}.`;
+            console.log(logger);
+            board.setLogger(logger);
 
             function checkWin() {
-                //3 in a row?
-                let threeX = false;
-                let threeO = false;
-                let tie = false;
+                let tie;
 
-                const boardWithCellValues = function () { return board.getBoard().map((row) => row.map((cell) => cell.getValue())); };
+                const boardWithCellValues = function () {
+                    return board.getBoard().map((row) => row.map((cell) => cell.getValue()));
+                };
 
                 const transpose = function (grid) {
                     return grid[0].map(
@@ -113,6 +115,13 @@ function GameController(
                     arrayofatlok.push([board[0][0], board[1][1], board[2][2]], [board[0][2], board[1][1], board[2][0]]);
                     return arrayofatlok;
                 };
+                function gameOver(winner) {
+                    if (winner === "tie") { logger = "Game over! It's a tie!" };
+                    if (winner === players[0] || winner === players[1]) { logger = `Game over! Winner is ${winner.name}, (${winner.token})!`; };
+                    console.log(logger);
+                    board.setLogger(logger);
+                    return true;
+                };
 
                 const switched = transpose(boardWithCellValues());
                 const boardRowsColumns = switched.concat(boardWithCellValues(), atlok());
@@ -120,27 +129,28 @@ function GameController(
 
                 const boardToStrings = boardRowsColumns
                     .map((row) => row.join(""));
+                let end = false;
+                function stringCheck(condition) {
+                    let filtered = boardToStrings.filter((string) => string.includes(condition));
+                    return filtered.length;
+                };
+                //na mit csinaljon ez a funkcio??
+                //nezze meg hogy a boardtostringsben van-e xxx, ha nincs akk nezze meg h van e ooo, ha nincs nezze meg h van e _
+                //nem biztos hogy le tudom röviditeni, nem biztos h kell.
+                if (!stringCheck("_")) end = "tie";
+                if (stringCheck("XXX")) end = players[0];
+                if (stringCheck("OOO")) end = players[1];
 
-                if (boardToStrings.filter((string) => string.includes("_")).length === 0) tie = true;
+                /* if (boardToStrings.filter((string) => string.includes("_")).length === 0) end = "tie";
 
-                if (boardToStrings.filter((string) => string.includes("XXX")).length > 0) threeX = true;
+                if (boardToStrings.filter((string) => string.includes("XXX")).length > 0) end = players[0];
 
-                if (boardToStrings.filter((string) => string.includes("OOO")).length > 0) threeO = true;
+                if (boardToStrings.filter((string) => string.includes("OOO")).length > 0) end = players[1]; */
 
-                if (threeX) {
-                    console.log(`Game over! Winner is ${players[0].name}!`);
-                    return true;
-                }
-                else if (threeO) {
-                    console.log(`Game over! Winner is ${players[1].name}!`);
-                    return true;
-                }
-                else if (tie) {
-                    console.log("Game over! It's a tie!");
-                    return true;
-                }
+                if (end) return gameOver(end);
                 else return false;
             }
+
             if (!checkWin()) {
                 switchPlayer();
                 announceTurn();
@@ -165,7 +175,7 @@ function UIcontroller() {
         boardDiv.innerHTML = "";
         const board = game.getBoard();
         let activePlayer = game.getActivePlayer();
-        texth1.textContent = `It is ${activePlayer.name}'s turn.`;
+        texth1.innerHTML = `It is ${activePlayer.name}'s turn.<br />Please click a square to place your (${activePlayer.token}).`;
         loggerp.textContent = game.getLogger();
         board.forEach((row, rowindex) => row.forEach((cell, columnindex) => {
             let button = document.createElement("button");
@@ -180,12 +190,9 @@ function UIcontroller() {
     function clicker(event) {
         event.stopPropagation();
         let button = event.target;
-        console.log(button);
         if (!button.dataset.row) return;
         game.playRound(button.dataset.row, button.dataset.column);
-        console.log("target before updating screen: " + button.dataset.row);
         updateScreen();
-        console.log("target after updating screen: " + button.dataset.row);
     }
     boardDiv.addEventListener("click", clicker);
     updateScreen();
