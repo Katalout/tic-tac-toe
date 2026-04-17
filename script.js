@@ -134,17 +134,13 @@ function GameController(
                     let filtered = boardToStrings.filter((string) => string.includes(condition));
                     return filtered.length;
                 };
-                //na mit csinaljon ez a funkcio??
-                //nezze meg hogy a boardtostringsben van-e xxx, ha nincs akk nezze meg h van e ooo, ha nincs nezze meg h van e _
-                //nem biztos hogy le tudom röviditeni, nem biztos h kell.
+
                 if (!stringCheck("_")) end = "tie";
                 if (stringCheck("XXX")) end = players[0];
                 if (stringCheck("OOO")) end = players[1];
 
                 /* if (boardToStrings.filter((string) => string.includes("_")).length === 0) end = "tie";
-
                 if (boardToStrings.filter((string) => string.includes("XXX")).length > 0) end = players[0];
-
                 if (boardToStrings.filter((string) => string.includes("OOO")).length > 0) end = players[1]; */
 
                 if (end) return gameOver(end);
@@ -160,7 +156,7 @@ function GameController(
     }
 
     announceTurn();
-    return { playRound, getActivePlayer, resetGame, getBoard: board.getBoard, getLogger: board.getLogger }
+    return { playRound, getActivePlayer, resetGame, getBoard: board.getBoard, getLogger: board.getLogger, resetGame }
 }
 
 function UIcontroller() {
@@ -168,6 +164,7 @@ function UIcontroller() {
     const texth1 = document.querySelector(".text");
     const loggerp = document.querySelector(".logger");
     const boardDiv = document.querySelector(".board");
+    const resetButton = document.querySelector(".reset");
 
     const updateText = (text) => texth1.textContent = text;
 
@@ -187,14 +184,19 @@ function UIcontroller() {
         }))
 
     }
-    function clicker(event) {
+    function clickCell(event) {
         event.stopPropagation();
         let button = event.target;
         if (!button.dataset.row) return;
         game.playRound(button.dataset.row, button.dataset.column);
         updateScreen();
     }
-    boardDiv.addEventListener("click", clicker);
+    function clickReset(event) {
+        game.resetGame();
+        updateScreen();
+    };
+    boardDiv.addEventListener("click", clickCell);
+    resetButton.addEventListener("click", clickReset);
     updateScreen();
     return { updateText }
 }
