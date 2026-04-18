@@ -69,6 +69,8 @@ function GameController(
         token: "O"
     }];
 
+    let gameEnd = false;
+
     let activePlayer = players[0];
 
     function switchPlayer() {
@@ -85,9 +87,13 @@ function GameController(
         console.log("Resetting game..");
         board.resetBoard();
         activePlayer = players[0];
+        gameEnd = false;
+        board.setLogger("");
+        console.log(board.getLogger());
         announceTurn();
     }
 
+    const getGameEnd = () => gameEnd;
     function playRound(row, column) {
         if (board.placeToken(row, column, activePlayer.token)) {
             let logger = `Placed ${getActivePlayer().name}'s token:${getActivePlayer().token} to cell ${row}/${column}.`;
@@ -117,7 +123,8 @@ function GameController(
                 };
                 function gameOver(winner) {
                     if (winner === "tie") { logger = "Game over! It's a tie!" };
-                    if (winner === players[0] || winner === players[1]) { logger = `Game over! Winner is ${winner.name}, (${winner.token})!`; };
+                    if (winner === players[0] || winner === players[1]) { logger = `Game over! Winner is ${winner.name} (${winner.token})!`; };
+                    /* logger += " Press 'reset game' to start a new game." */
                     console.log(logger);
                     board.setLogger(logger);
                     return true;
@@ -151,12 +158,12 @@ function GameController(
                 switchPlayer();
                 announceTurn();
             }
-
+            else gameEnd = true;
         }
     }
 
     announceTurn();
-    return { playRound, getActivePlayer, resetGame, getBoard: board.getBoard, getLogger: board.getLogger, resetGame }
+    return { playRound, getActivePlayer, resetGame, getBoard: board.getBoard, getLogger: board.getLogger, setLogger: board.setLogger, getGameEnd }
 }
 
 function UIcontroller() {
@@ -165,8 +172,6 @@ function UIcontroller() {
     const loggerp = document.querySelector(".logger");
     const boardDiv = document.querySelector(".board");
     const resetButton = document.querySelector(".reset");
-
-    const updateText = (text) => texth1.textContent = text;
 
     function updateScreen() {
         boardDiv.innerHTML = "";
@@ -186,11 +191,38 @@ function UIcontroller() {
     }
     function clickCell(event) {
         event.stopPropagation();
+        if (game.getGameEnd()) {
+            showDialog();
+            return
+        }; // ide lehetne pakolni meg funkciokat h mi törtenjen ha vege.
         let button = event.target;
         if (!button.dataset.row) return;
         game.playRound(button.dataset.row, button.dataset.column);
+        if (game.getGameEnd()) {
+            showDialog();
+        };
         updateScreen();
     }
+
+    function showDialog() {
+        const dialog = document.querySelector("dialog");
+        const h2 = document.querySelector("h2");
+        const cancel = document.getElementById("cancel");
+        const reset = document.getElementById("reset");
+        cancel.addEventListener("click", () => {
+            dialog.close()
+        });
+        reset.addEventListener("click", () => {
+            clickReset();
+            dialog.close();
+        });
+        h2.textContent = game.getLogger();
+        console.log(game.getLogger());
+        dialog.showModal();
+
+    };
+
+
     function clickReset(event) {
         game.resetGame();
         updateScreen();
@@ -198,6 +230,9 @@ function UIcontroller() {
     boardDiv.addEventListener("click", clickCell);
     resetButton.addEventListener("click", clickReset);
     updateScreen();
-    return { updateText }
 }
 UIcontroller();
+
+//mit kéne még?
+// -game over utan ne lehessen lepni/jöjjön fel dialog to reset?
+//ne ugy nezzen ki mint a hanyas

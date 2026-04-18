@@ -11,14 +11,20 @@ h1 {
 }
 
 .board {
+    width: fit-content;
     border: 2px solid white;
     padding: 10px;
     display: grid;
-    grid-template-columns: repeat(3, 30px);
-    grid-template-rows: repeat(3, 30px);
+    grid-template-columns: repeat(3, 50px);
+    grid-template-rows: repeat(3, 50px);
+    gap: 2px;
 }
 
 .cell {
-    border: 2px solid blue;
+    border: none;
+    outline: 2px solid blue;
     padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
