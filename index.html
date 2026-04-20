@@ -16,12 +16,38 @@
         <p class="logger"></p>
         <button type="button" class="reset">Reset game</button>
         <div class="board"></div>
-        <dialog id="gameover">
+
+
+        <dialog id="start" closedby="any">
+            <h2>Play tic-tac-toe with yourself! Fun!</h2>
+            <form>
+                <label for="player1">"Player One"-s name: <input type="text" id="player1"
+                        value="**professor X**"></label>
+                <label for="player2">"Player
+                    Two"-s name: <input type="text" id="player2" value="**stOrm**"></label>
+                <button type="button" class="submit">Done</button>
+                <button type="button" class="cancel">Idc, use defaults ya nerd</button>
+            </form>
+        </dialog>
+
+        <!-- <dialog id="resetgame">
+            <h2>Do you want to pick new player names?</h2>
+            <label for="player1">"Player One"-s name: <input type="text" id="player1" value="**professor X**"></label>
+            <label for="player2">"Player
+                Two"-s name: <input type="text" id="player2" value="**stOrm**"></label>
+            <button type="button" class="submit">Done</button>
+            <button type="button" class="cancel">OMG leave me alone</button>
+        </dialog> -->
+
+        <dialog id="gameover" closedby="any">
             <h2></h2>
             <h3>Would you like to play again?</h3>
             <button type="button" id="reset">Yeah</button><button type="button" id="cancel">No, leave me
                 alone</button>
         </dialog>
+
+
+
     </div>
 
 

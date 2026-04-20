@@ -167,11 +167,12 @@ function GameController(
 }
 
 function UIcontroller() {
-    const game = GameController("Emez", "Amaz");
+    let game;
     const texth1 = document.querySelector(".text");
     const loggerp = document.querySelector(".logger");
     const boardDiv = document.querySelector(".board");
     const resetButton = document.querySelector(".reset");
+    let resetted = false;
 
     function updateScreen() {
         boardDiv.innerHTML = "";
@@ -184,7 +185,7 @@ function UIcontroller() {
             button.classList.add("cell");
             button.dataset.column = columnindex;
             button.dataset.row = rowindex;
-            button.textContent = cell.getValue();
+            button.textContent = (cell.getValue() === "_") ? "" : cell.getValue();
             boardDiv.appendChild(button);
         }))
 
@@ -192,47 +193,83 @@ function UIcontroller() {
     function clickCell(event) {
         event.stopPropagation();
         if (game.getGameEnd()) {
-            showDialog();
+            showDialogGO();
             return
         }; // ide lehetne pakolni meg funkciokat h mi törtenjen ha vege.
         let button = event.target;
         if (!button.dataset.row) return;
         game.playRound(button.dataset.row, button.dataset.column);
         if (game.getGameEnd()) {
-            showDialog();
+            showDialogGO();
         };
         updateScreen();
     }
 
-    function showDialog() {
-        const dialog = document.querySelector("dialog");
-        const h2 = document.querySelector("h2");
+    function showDialogGO() {
+        const dialogGO = document.getElementById("gameover");
+        const h2 = dialogGO.querySelector("h2");
         const cancel = document.getElementById("cancel");
         const reset = document.getElementById("reset");
         cancel.addEventListener("click", () => {
-            dialog.close()
+            dialogGO.close()
         });
         reset.addEventListener("click", () => {
             clickReset();
-            dialog.close();
+            dialogGO.close();
         });
         h2.textContent = game.getLogger();
         console.log(game.getLogger());
-        dialog.showModal();
-
+        dialogGO.showModal();
     };
 
+    function showDialogStart() {
+        if (resetted) console.log("clicked bitch");
+        resetted = false;
+        const startDialog = document.getElementById("start");
+        const player1 = document.getElementById("player1");
+        const player2 = document.getElementById("player2");
+        const buttons = startDialog.querySelectorAll(".submit,.cancel");
+        console.log(buttons);
+        buttons.forEach((button) => button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+            console.log(event);
+            console.log(event.target);
+            if (event.target.className == "submit") {
+                game = GameController(player1.value, player2.value)
+            }
+            else { game = GameController("Emez", "Amaz") }
+            startDialog.close();
+            updateScreen();
+        }));
+        // check if fields are filled? meh
+        // hmmm almost same dialog to pop up in the beginning, then upon clicking reset?
+        //begin w if check: if clicked, then this. if just popped, then that hmm. 
 
-    function clickReset(event) {
-        game.resetGame();
-        updateScreen();
+        // winning conditions rework: i dont need to check the whole table for xxx/ooo, just the rows/atlos of the latest move. this way the winning 3 cells could be highlighteddd hmmm
+        startDialog.showModal();
+    };
+
+    function clickReset() {
+        if (!game) return;
+        else {
+            game.resetGame();
+            updateScreen();
+            resetted = true;
+        }
     };
     boardDiv.addEventListener("click", clickCell);
-    resetButton.addEventListener("click", clickReset);
-    updateScreen();
+
+    resetButton.addEventListener("click", () => {
+        clickReset();
+        showDialogStart();
+    });
+    showDialogStart();
+    /* updateScreen(); */
 }
 UIcontroller();
 
 //mit kéne még?
-// -game over utan ne lehessen lepni/jöjjön fel dialog to reset?
+// input names dialog
+// dialogs softclose
 //ne ugy nezzen ki mint a hanyas
