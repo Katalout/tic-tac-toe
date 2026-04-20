@@ -52,7 +52,10 @@ function Cell() {
     const addToken = function (token) {
         value = token;
     };
-    return { getValue, addToken }
+    let winner = false;
+    const setwinner = () => winner = !winner;
+    const getwinner = () => winner;
+    return { getValue, addToken, getwinner, setwinner }
 }
 
 function GameController(
@@ -99,57 +102,59 @@ function GameController(
             let logger = `Placed ${getActivePlayer().name}'s token:${getActivePlayer().token} to cell ${row}/${column}.`;
             console.log(logger);
             board.setLogger(logger);
+            let playedCell = board.getBoard()[row][column];
+            console.log(playedCell);
 
             function checkWin() {
-                let tie;
-
                 const boardWithCellValues = function () {
                     return board.getBoard().map((row) => row.map((cell) => cell.getValue()));
                 };
+                const boardToStrings = boardWithCellValues().map((row) => row.join(""));
 
-                const transpose = function (grid) {
-                    return grid[0].map(
-                        (_, c) => grid.map(
-                            row => row[c]
-                        )
-                    )
-                };
+                let end = false;
 
-                const atlok = function () {
-                    let arrayofatlok = [];
-                    let board = boardWithCellValues();
-                    arrayofatlok.push([board[0][0], board[1][1], board[2][2]], [board[0][2], board[1][1], board[2][0]]);
-                    return arrayofatlok;
+                //tehat kell egy array of arrays: [[sor],[oszlop],[atlo],[atlo]]. Ezt findolja a transformok utan hmm.
+
+                function getThoseThrees() {
+                    let table = board.getBoard();
+                    let currentRow = table[row];
+                    let currentColumn = table.map((row) => row[column]);
+                    let diagonals = [[table[0][0], table[1][1], table[2][2]], [table[0][2], table[1][1], table[2][0]]];
+                    let thoseThrees = [];
+                    thoseThrees.push(currentRow, currentColumn);
+                    thoseThrees = thoseThrees.concat(diagonals);
+                    return thoseThrees;
+                }
+
+                let winningProof = getThoseThrees().find((array) => {
+                    let values = array.map((cell) => cell.getValue());
+                    let string = values.join("");
+                    let x = playedCell.getValue();
+                    return string == (x + x + x);
+                });
+
+                // megvan a winner sor, akor hogy kene kiemelnii
+                if (winningProof) {
+                    winningProof.forEach((cell) => cell.setwinner());
+                    end = activePlayer;
                 };
+                // nah sikerült kiemelni a nyertest, akkor most egyszerüsiteni kene a nyerest erre.
+
                 function gameOver(winner) {
-                    if (winner === "tie") { logger = "Game over! It's a tie!" };
-                    if (winner === players[0] || winner === players[1]) { logger = `Game over! Winner is ${winner.name} (${winner.token})!`; };
+                    if (winner === "tie") { logger = "Game over! It's a tie!" }
+                    else { logger = `Game over! Winner is ${winner.name} (${winner.token})!`; };
                     /* logger += " Press 'reset game' to start a new game." */
                     console.log(logger);
                     board.setLogger(logger);
                     return true;
                 };
 
-                const switched = transpose(boardWithCellValues());
-                const boardRowsColumns = switched.concat(boardWithCellValues(), atlok());
-                //akkor most ezt add hozzá i guess? hogy sporoljunk?
-
-                const boardToStrings = boardRowsColumns
-                    .map((row) => row.join(""));
-                let end = false;
-                function stringCheck(condition) {
-                    let filtered = boardToStrings.filter((string) => string.includes(condition));
-                    return filtered.length;
+                function checkForTie() {
+                    let emptyCells = boardToStrings.filter((string) => string.includes("_"));
+                    return emptyCells.length == 0;
                 };
 
-                if (!stringCheck("_")) end = "tie";
-                if (stringCheck("XXX")) end = players[0];
-                if (stringCheck("OOO")) end = players[1];
-
-                /* if (boardToStrings.filter((string) => string.includes("_")).length === 0) end = "tie";
-                if (boardToStrings.filter((string) => string.includes("XXX")).length > 0) end = players[0];
-                if (boardToStrings.filter((string) => string.includes("OOO")).length > 0) end = players[1]; */
-
+                if (checkForTie()) end = "tie";
                 if (end) return gameOver(end);
                 else return false;
             }
@@ -186,6 +191,7 @@ function UIcontroller() {
             button.dataset.column = columnindex;
             button.dataset.row = rowindex;
             button.textContent = (cell.getValue() === "_") ? "" : cell.getValue();
+            if (cell.getwinner()) button.classList.add("winner");
             boardDiv.appendChild(button);
         }))
 
