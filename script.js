@@ -271,7 +271,7 @@ function UIcontroller() {
         clickReset();
         showDialogStart();
     });
-    showDialogStart();
+    /* showDialogStart(); */
 }
 UIcontroller();
 
