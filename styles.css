@@ -1,8 +1,12 @@
+:root {
+    --cell-border: 2px solid rgb(93, 162, 223);
+}
+
 body,
 html {
     width: 100vw;
     height: 100vh;
-    background-color: rgb(229, 229, 229);
+    background-color: whitesmoke;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
 }
@@ -14,7 +18,9 @@ body {
 
 
 
-h1 {
+h1,
+p,
+h2 {
     color: rgb(59, 76, 99);
 }
 
@@ -25,19 +31,93 @@ h1 {
     display: grid;
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(3, 100px);
-    gap: 2px;
+    /* gap: 2px; */
 }
 
 .cell {
     border: none;
-    outline: 2px solid rgb(28, 28, 91);
+    /* outline: 2px solid rgb(28, 28, 91); */
     /* padding: 10px; */
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: whitesmoke;
+}
+
+.cell.X {
+    color: red;
+}
+
+.cell.O {
+    color: blue;
+}
+
+.cell[data-row="1"][data-column="1"] {
+    border: var(--cell-border);
+}
+
+.cell[data-row="0"][data-column="1"],
+.cell[data-row="2"][data-column="1"] {
+    border-left: var(--cell-border);
+    border-right: var(--cell-border);
+}
+
+.cell[data-row="1"][data-column="0"],
+.cell[data-row="1"][data-column="2"] {
+    border-top: var(--cell-border);
+    border-bottom: var(--cell-border);
 }
 
 .winner {
     font-size: 150%;
     font-weight: bold;
 }
+
+/* Open state of the dialog  */
+dialog:open {
+    opacity: 1;
+}
+
+/* Closed state of the dialog   */
+dialog {
+    opacity: 0;
+    transition: all 0.5s allow-discrete;
+    /* Equivalent to
+  transition: all 0.7s allow-discrete; */
+}
+
+/* Before open state  */
+/* Needs to be after the previous dialog:open rule to take effect,
+    as the specificity is the same */
+@starting-style {
+    dialog:open {
+        opacity: 0;
+    }
+}
+
+/* Transition the :backdrop when the dialog modal is promoted to the top layer */
+dialog::backdrop {
+    background-color: transparent;
+    transition: all 0.5s allow-discrete;
+}
+
+dialog:open::backdrop {
+    background-color: rgb(0 0 0 / 25%);
+}
+
+/* This starting-style rule cannot be nested inside the above selector
+because the nesting selector cannot represent pseudo-elements. */
+
+@starting-style {
+    dialog:open::backdrop {
+        background-color: transparent;
+    }
+}
+
+/* 
+xmen theme
+VAGY KOCKASFÜZET THEME OOOHHHH
+logger position fix
+layout
+dialogs layout and colors
+ */

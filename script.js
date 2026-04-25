@@ -6,7 +6,7 @@ function Gameboard() {
     const rows = 3;
     const columns = 3;
     const board = [];
-    let logger = "";
+    let logger = " ";
 
     for (let i = 0; i < rows; i++) {
         let row = [];
@@ -27,7 +27,7 @@ function Gameboard() {
         const targetCell = board[row][column];
         if (targetCell.getValue() === "_") {
             targetCell.addToken(token);
-            logger = "";
+            logger = " ";
             return true;
         }
         else {
@@ -37,7 +37,11 @@ function Gameboard() {
         }
     }
     const resetBoard = function () {
-        board.forEach((row) => row.forEach((cell) => cell.addToken("_")))
+        board.forEach((row) => row.forEach((cell) => {
+            cell.addToken("_");
+            cell.setWinner(false);
+        }
+        ))
     };
     const getLogger = () => logger;
     const setLogger = (text) => logger = text;
@@ -53,9 +57,9 @@ function Cell() {
         value = token;
     };
     let winner = false;
-    const setwinner = () => winner = !winner;
-    const getwinner = () => winner;
-    return { getValue, addToken, getwinner, setwinner }
+    const setWinner = (text) => winner = text;
+    const getWinner = () => winner;
+    return { getValue, addToken, getWinner, setWinner }
 }
 
 function GameController(
@@ -91,7 +95,7 @@ function GameController(
         board.resetBoard();
         activePlayer = players[0];
         gameEnd = false;
-        board.setLogger("");
+        board.setLogger(" ");
         console.log(board.getLogger());
         announceTurn();
     }
@@ -135,7 +139,7 @@ function GameController(
 
                 // megvan a winner sor, akor hogy kene kiemelnii
                 if (winningProof) {
-                    winningProof.forEach((cell) => cell.setwinner());
+                    winningProof.forEach((cell) => cell.setWinner(true));
                     end = activePlayer;
                 };
                 // nah sikerült kiemelni a nyertest, akkor most egyszerüsiteni kene a nyerest erre.
@@ -173,7 +177,7 @@ function GameController(
 
 function UIcontroller() {
     let game;
-    const texth1 = document.querySelector(".text");
+    const texth2 = document.querySelector(".text");
     const loggerp = document.querySelector(".logger");
     const boardDiv = document.querySelector(".board");
     const resetButton = document.querySelector(".reset");
@@ -183,7 +187,7 @@ function UIcontroller() {
         boardDiv.innerHTML = "";
         const board = game.getBoard();
         let activePlayer = game.getActivePlayer();
-        texth1.innerHTML = `It is ${activePlayer.name}'s turn.<br />Please click a square to place your (${activePlayer.token}).`;
+        texth2.innerHTML = `It is ${activePlayer.name}'s turn.<br />Please click a square to place your (${activePlayer.token}).`;
         loggerp.textContent = game.getLogger();
         board.forEach((row, rowindex) => row.forEach((cell, columnindex) => {
             let button = document.createElement("button");
@@ -191,7 +195,8 @@ function UIcontroller() {
             button.dataset.column = columnindex;
             button.dataset.row = rowindex;
             button.textContent = (cell.getValue() === "_") ? "" : cell.getValue();
-            if (cell.getwinner()) button.classList.add("winner");
+            button.classList.add(cell.getValue());
+            if (cell.getWinner()) button.classList.add("winner");
             boardDiv.appendChild(button);
         }))
 
@@ -248,11 +253,7 @@ function UIcontroller() {
             startDialog.close();
             updateScreen();
         }));
-        // check if fields are filled? meh
-        // hmmm almost same dialog to pop up in the beginning, then upon clicking reset?
-        //begin w if check: if clicked, then this. if just popped, then that hmm. 
 
-        // winning conditions rework: i dont need to check the whole table for xxx/ooo, just the rows/atlos of the latest move. this way the winning 3 cells could be highlighteddd hmmm
         startDialog.showModal();
     };
 
@@ -271,11 +272,9 @@ function UIcontroller() {
         showDialogStart();
     });
     showDialogStart();
-    /* updateScreen(); */
 }
 UIcontroller();
 
 //mit kéne még?
-// input names dialog
-// dialogs softclose
+
 //ne ugy nezzen ki mint a hanyas
