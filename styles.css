@@ -40,6 +40,7 @@ body {
 }
 
 .container {
+    padding: 55px 60px 20px 135px;
     position: relative;
     border-radius: 10px 0px 0 10px;
     box-sizing: border-box;
@@ -57,7 +58,7 @@ lehet akar csak  afüzet masik oldala i guess */
         linear-gradient(to bottom, var(--gridcolor) 1px, whitesmoke 1px);
 
     background-repeat: repeat-y, repeat, repeat;
-    padding: 49px 60px 20px 135px;
+
 
 }
 
@@ -88,14 +89,15 @@ h2 {
     -webkit-background-clip: text;
     color: transparent;
     text-shadow: -2px -1px 3px rgba(245, 245, 245, 0.436);
+    line-height: 40px;
 }
 
 span {}
 
 em {
-    background: none;
-    color: rgb(59, 76, 99);
-    text-shadow: 1px 1px 2px pink;
+    text-shadow:
+        -2px -1px 3px rgba(245, 245, 245, 0.436);
+
     /* border-bottom: solid 3px rgb(59, 76, 99); */
     /* text-decoration:underline; */
 
