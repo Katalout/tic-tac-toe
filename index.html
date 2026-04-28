@@ -14,13 +14,24 @@
         <h1 class="title">I ma<span>de</span> a tic-tac-toe game!<br>Be <em>veryy</em> impressed!</h1>
         <h2 class="text"></h2>
         <p class="logger"></p>
+        <div class="staplers">
+            <div class="stapler"></div>
+            <div class="stapler"></div>
+            <div class="stapler"></div>
+            <div class="stapler"></div>
+        </div>
         <div class="resetblock">
 
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="370 100 200 170" width="100px">
+                <filter id="myfilters">
+                    <feOffset dx='-10' dy='8' />
+                    <feGaussianBlur stdDeviation='4' result='offset-blur' />
+                    <feComposite operator='out' in='SourceGraphic' in2='offset-blur' result='inverse' />
+                </filter>
                 <path
                     d="M377.29083251953125,120.71713256835938C392.1115493774414,119.6414348602295,453.74501647949216,105.65736770629883,476.0956115722656,113.54581451416016C498.4462066650391,121.43426132202148,521.7529647827148,150.83665733337403,526.2947998046875,173.30677795410156C530.8366348266602,195.7768985748291,513.5458236694336,255.93626022338867,506.37451171875,263.34661865234375C499.2031997680664,270.7569770812988,478.72509765625,222.70916748046875,478.4860534667969,222.70916748046875C478.24700927734375,222.70916748046875,492.94821014404295,259.40239639282225,504.7808837890625,263.34661865234375C516.613557434082,267.29084091186525,549.4820953369141,251.15537796020507,557.3705444335938,249.0039825439453"
-                    fill="none" stroke-width="7" stroke="rgb(48, 85, 136)" stroke-linecap="round" stroke-opacity="0.81">
+                    fill="none" stroke-width="7" stroke="rgb(48, 85, 136)" stroke-linecap="round" stroke-opacity="0.69">
                 </path>
             </svg>
 

@@ -73,6 +73,43 @@ lehet akar csak  afüzet masik oldala i guess */
     background-image: linear-gradient(to left, transparent, rgba(128, 128, 128, 0.444), rgba(128, 128, 128, 0.261) 30% 40%, transparent);
 }
 
+.stapler {
+    content: "";
+    width: 1px;
+    height: 25px;
+    position: absolute;
+    right: 20px;
+
+    /* box-sizing: border-box; */
+    border-color: rgb(193, 193, 193) whitesmoke;
+    border-style: ridge;
+    border-width: 20px 1;
+    border-radius: 4px 4px 1px 1px;
+    background-color: rgb(175, 175, 175);
+    -webkit-box-shadow: 3px 3px 15px 0px rgba(0, 0, 0, 0.37);
+    box-shadow: 1px 2px 2px 0px rgba(0, 0, 0, 0.37);
+}
+
+.stapler:first-child {
+    border-radius: 4px 4px 1px 1px;
+    top: 22%;
+}
+
+.stapler:nth-child(2) {
+    border-radius: 1px 1px 4px 4px;
+    top: 30%;
+}
+
+.stapler:nth-child(3) {
+    border-radius: 4px 4px 1px 1px;
+    bottom: 22%;
+}
+
+.stapler:nth-child(4) {
+    bottom: 30%;
+    border-radius: 1px 1px 4px 4px;
+}
+
 h1,
 p,
 h2 {
@@ -92,15 +129,13 @@ h2 {
     line-height: 40px;
 }
 
-span {}
+svg path {
+    /* filter: drop-shadow(-2px -1px 3px rgba(193, 114, 114, 0.671)); */
+    filter: url(#myfilters);
+}
 
-em {
-    text-shadow:
-        -2px -1px 3px rgba(245, 245, 245, 0.436);
-
-    /* border-bottom: solid 3px rgb(59, 76, 99); */
-    /* text-decoration:underline; */
-
+img {
+    filter: drop-shadow(2px 3px 3px rgb(0 0 0 / 0.4));
 }
 
 .board {
