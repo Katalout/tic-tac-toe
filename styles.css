@@ -42,7 +42,7 @@ body {
 .container {
     padding: 55px 60px 0 135px;
     position: relative;
-    border-radius: 10px 0px 0 10px;
+    border-radius: 15px 0 0 15px;
     box-sizing: border-box;
     width: min(850px, 100%);
     /* mit csinálunk a lap jobb oldalával? idk
@@ -207,11 +207,17 @@ img:active {
     grid-template-columns: auto auto;
     width: fit-content;
     align-items: end;
+    column-gap: 20px;
+}
+
+.logger em {
+    margin: 5px;
+    font-size: 110%;
 }
 
 .board {
     display: grid;
-    grid-template-columns: 80px 80px 85px;
+    grid-template-columns: 76px 81px 83px;
     grid-template-rows: 80px 80px 82px;
     width: max-content;
     height: max-content;
@@ -342,7 +348,7 @@ border-left:0; */
     border-bottom: var(--cell-border);
 } */
 
-.winner {
+.cell.winner {
     font-size: 150%;
     font-weight: bold;
 }

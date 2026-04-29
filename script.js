@@ -32,7 +32,7 @@ function Gameboard() {
         }
         else {
             console.log("Invalid move, try again");
-            logger = "I should have clarified.. Click an *empty* square.";
+            logger = "// I should have clarified..<br />Click an <em>empty</em> square.";
             return false;
         }
     }
@@ -146,8 +146,8 @@ function GameController(
                 // nah sikerült kiemelni a nyertest, akkor most egyszerüsiteni kene a nyerest erre.
 
                 function gameOver(winner) {
-                    if (winner === "tie") { logger = "Game over! It's a tie!" }
-                    else { logger = `Game over! Winner is ${winner.name} (${winner.token})!`; };
+                    if (winner === "tie") { logger = "// It's a tie!" }
+                    else { logger = `// Game over! Winner is ${winner.name} (${winner.token})!`; };
                     /* logger += " Press 'reset game' to start a new game." */
                     console.log(logger);
                     board.setLogger(logger);
@@ -189,8 +189,8 @@ function UIcontroller() {
         boardDiv.innerHTML = "";
         const board = game.getBoard();
         let activePlayer = game.getActivePlayer();
-        texth2.innerHTML = `${activePlayer.name}'s turn.<br />Click a square to place an ${activePlayer.token}.`;
-        loggerp.textContent = game.getLogger();
+        texth2.innerHTML = (game.getGameEnd()) ? "GAME OVER BEACHES" : `${activePlayer.name}'s turn.<br />Click a square to place an ${activePlayer.token}.`;
+        loggerp.innerHTML = game.getLogger();
         board.forEach((row, rowindex) => row.forEach((cell, columnindex) => {
             let button = document.createElement("button");
             button.classList.add("cell");
@@ -206,7 +206,6 @@ function UIcontroller() {
             console.log(boardDiv.querySelector("[data-index='" + latest + "']"));
             boardDiv.querySelector("[data-index='" + latest + "']").classList.add("latest");
         }
-        //how to mark latest move hmm
 
     }
     function clickCell(event) {
