@@ -32,7 +32,7 @@ function Gameboard() {
         }
         else {
             console.log("Invalid move, try again");
-            logger = "Invalid move, try again";
+            logger = "I should have clarified.. Click an *empty* square.";
             return false;
         }
     }
@@ -87,7 +87,7 @@ function GameController(
 
     function announceTurn() {
         board.printBoard();
-        console.log(`It is ${getActivePlayer().name}'s turn. (${getActivePlayer().token})`)
+        console.log(`${getActivePlayer().name}'s turn. (${getActivePlayer().token})`)
     }
 
     function resetGame() {
@@ -103,9 +103,10 @@ function GameController(
     const getGameEnd = () => gameEnd;
     function playRound(row, column) {
         if (board.placeToken(row, column, activePlayer.token)) {
-            let logger = `Placed ${getActivePlayer().name}'s token:${getActivePlayer().token} to cell ${row}/${column}.`;
+            let logger;
+            /* let logger = `Placed ${getActivePlayer().name}'s token:${getActivePlayer().token} to cell ${row}/${column}.`;
             console.log(logger);
-            board.setLogger(logger);
+            board.setLogger(logger); */
             let playedCell = board.getBoard()[row][column];
             console.log(playedCell);
 
@@ -182,23 +183,30 @@ function UIcontroller() {
     const boardDiv = document.querySelector(".board");
     const resetButton = document.querySelector(".reset");
     let resetted = false;
+    let latest;
 
     function updateScreen() {
         boardDiv.innerHTML = "";
         const board = game.getBoard();
         let activePlayer = game.getActivePlayer();
-        texth2.innerHTML = `It is ${activePlayer.name}'s turn.<br />Please click a square to place your (${activePlayer.token}).`;
+        texth2.innerHTML = `${activePlayer.name}'s turn.<br />Click a square to place an ${activePlayer.token}.`;
         loggerp.textContent = game.getLogger();
         board.forEach((row, rowindex) => row.forEach((cell, columnindex) => {
             let button = document.createElement("button");
             button.classList.add("cell");
-            button.dataset.column = columnindex;
             button.dataset.row = rowindex;
+            button.dataset.column = columnindex;
+            button.dataset.index = rowindex * 3 + columnindex;
             button.textContent = (cell.getValue() === "_") ? "" : cell.getValue();
             button.classList.add(cell.getValue());
             if (cell.getWinner()) button.classList.add("winner");
             boardDiv.appendChild(button);
-        }))
+        }));
+        if (latest) {
+            console.log(boardDiv.querySelector("[data-index='" + latest + "']"));
+            boardDiv.querySelector("[data-index='" + latest + "']").classList.add("latest");
+        }
+        //how to mark latest move hmm
 
     }
     function clickCell(event) {
@@ -209,6 +217,9 @@ function UIcontroller() {
         }; // ide lehetne pakolni meg funkciokat h mi törtenjen ha vege.
         let button = event.target;
         if (!button.dataset.row) return;
+        /* latest = game.getBoard()[button.dataset.row][button.dataset.column]; */
+        latest = button.dataset.index;
+        console.log(latest);
         game.playRound(button.dataset.row, button.dataset.column);
         if (game.getGameEnd()) {
             showDialogGO();
@@ -271,10 +282,10 @@ function UIcontroller() {
         clickReset();
         showDialogStart();
     });
+    game = GameController();
+    updateScreen();
     /* showDialogStart(); */
 }
 UIcontroller();
 
-//mit kéne még?
-
-//ne ugy nezzen ki mint a hanyas
+//elromlott a nyeres kihirdetesss

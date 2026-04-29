@@ -40,7 +40,7 @@ body {
 }
 
 .container {
-    padding: 55px 60px 20px 135px;
+    padding: 55px 60px 0 135px;
     position: relative;
     border-radius: 10px 0px 0 10px;
     box-sizing: border-box;
@@ -112,8 +112,13 @@ lehet akar csak  afüzet masik oldala i guess */
 
 h1,
 p,
-h2 {
-    color: rgb(59, 76, 99);
+h2,
+h3 {
+    background-color: rgb(48, 85, 136);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: -1px -2px 2px rgba(245, 245, 245, 0.436);
     margin: 0;
 }
 
@@ -129,13 +134,79 @@ h2 {
     line-height: 40px;
 }
 
+.text {
+    text-align: center;
+    margin-top: 42px;
+    margin-bottom: 30px;
+    line-height: 40px;
+}
+
 svg path {
     /* filter: drop-shadow(-2px -1px 3px rgba(193, 114, 114, 0.671)); */
     filter: url(#myfilters);
 }
 
+svg {}
+
 img {
     filter: drop-shadow(2px 3px 3px rgb(0 0 0 / 0.4));
+    position: relative;
+    right: 5px;
+    bottom: 20px;
+    transform: rotate(20deg);
+    transition: 250ms;
+    padding: 10px;
+    grid-area: 2/1/3/3;
+}
+
+img:hover {
+    transform: translateX(5px) scale(1.2);
+    filter: none;
+}
+
+img:active {
+    transform: translateX(-1px) scale(1.3);
+}
+
+.resetblock {
+    position: absolute;
+    bottom: 2px;
+    right: 10%;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto 1fr;
+    column-gap: 5px;
+}
+
+.resettext {
+    letter-spacing: 2px;
+    /* text-shadow: -1px -1px rgb(196, 196, 196); */
+    background-color: rgb(48, 85, 136);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: -1px -2px 2px rgba(245, 245, 245, 0.436);
+    width: min-content;
+    box-sizing: border-box;
+    position: relative;
+    bottom: 5px;
+}
+
+.resettext span {
+    position: relative;
+    background-color: rgb(48, 85, 136);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: -1px -2px 2px rgba(245, 245, 245, 0.436);
+    left: 20px;
+}
+
+.middle {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: fit-content;
+    align-items: end;
 }
 
 .board {
@@ -247,6 +318,12 @@ border-left:0; */
 
 .cell.O {
     color: blue;
+}
+
+.cell.latest {
+    text-shadow: 1px 1px 3px rgb(148, 145, 145);
+    /* font-size: 140%; */
+    font-weight: 200;
 }
 
 /* .cell[data-row="1"][data-column="1"] {
