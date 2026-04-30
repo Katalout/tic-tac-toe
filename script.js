@@ -283,7 +283,7 @@ function UIcontroller() {
     });
     game = GameController();
     updateScreen();
-    /* showDialogStart(); */
+    showDialogStart();
 }
 UIcontroller();
 

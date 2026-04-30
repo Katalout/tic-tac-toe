@@ -11,15 +11,17 @@
 
 <body>
     <div class="container">
-        <h1 class="title">I ma<span>de</span> a tic-tac-toe game!<br>Be <em>veryy</em> impressed!</h1>
-        <h2 class="text">ee professor <br>eeeeee pick</h2>
-
-        <div class="staplers">
-            <div class="stapler"></div>
-            <div class="stapler"></div>
-            <div class="stapler"></div>
-            <div class="stapler"></div>
+        <div class="title">
+            <h1 class="first">I made a <span class="game">TIC-TAC-TOE</span> game!</h1>
+            <h1 class="second">(Be <em>veryy</em> impressed!)</h1>
         </div>
+
+        <div class="middle">
+            <div class="board"></div>
+            <h2 class="text">ee professor <br>eeeeee pick</h2>
+            <h3 class="logger">lol</h3>
+        </div>
+
         <div class="resetblock">
             <h3 class="resettext">reset <span>game</span></h3>
 
@@ -39,22 +41,27 @@
             <img src="eraser2.png" alt="eraser" height="80px" class="reset">
         </div>
 
-        <div class="middle">
-            <div class="board"></div>
-            <h3 class="logger">lol</h3>
+        <div class="staplers">
+            <div class="stapler"></div>
+            <div class="stapler"></div>
+            <div class="stapler"></div>
+            <div class="stapler"></div>
         </div>
 
-
         <dialog id="start" closedby="any">
-            <h2>Play tic-tac-toe with yourself! Fun!</h2>
-            <form>
-                <label for="player1">"Player One"-s name: <input type="text" id="player1"
-                        value="**professor X**"></label>
-                <label for="player2">"Player
-                    Two"-s name: <input type="text" id="player2" value="**stOrm**"></label>
-                <button type="button" class="submit">Done</button>
-                <button type="button" class="cancel">Idc, use defaults ya nerd</button>
-            </form>
+            <div>
+                <h2>Play tic-tac-toe with yourself! Fun!</h2>
+                <form>
+                    <label for="player1">"Player One"-s name: <input type="text" id="player1"
+                            value="**professor X**"></label>
+                    <label for="player2">"Player
+                        Two"-s name: <input type="text" id="player2" value="**stOrm**"></label>
+                    <div>
+                        <button type="button" class="submit">Done</button>
+                        <button type="button" class="cancel">Idc, use defaults ya nerd</button>
+                    </div>
+                </form>
+            </div>
         </dialog>
 
         <!-- <dialog id="resetgame">
