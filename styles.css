@@ -377,14 +377,14 @@ border-left:0; */
 }
 
 /* Open state of the dialog  */
-dialog:open {
+dialog#start:open {
     position: absolute;
     top: 30%;
     left: 15%;
     opacity: 1;
-    color: rgb(84, 84, 84);
-    width: 480px;
-    height: 450px;
+    color: gray;
+    width: 450px;
+    height: 430px;
     border: none;
     /* box-shadow: 0 25px 35px -35px rgb(0, 0, 0); */
     /* -webkit-box-shadow: 0 25px 25px -35px rgba(0, 0, 0, 0.25);
@@ -399,7 +399,7 @@ dialog:open {
 
 }
 
-dialog>div {
+dialog#start>div {
     position: relative;
     width: 90%;
     height: 90%;
@@ -413,13 +413,13 @@ dialog>div {
     box-sizing: border-box;
 }
 
-dialog>div:before,
-dialog>div:after {
+dialog#start>div:before,
+dialog#start>div:after {
     content: '';
     z-index: -1;
     position: absolute;
     left: 10px;
-    bottom: 13px;
+    bottom: 14px;
     width: 70%;
     max-width: 300px;
     /* avoid rotation causing ugly appearance at large container widths */
@@ -435,7 +435,7 @@ dialog>div:after {
     transform: skew(-15deg) rotate(-6deg);
 }
 
-dialog>div:after {
+dialog#start>div:after {
     left: auto;
     right: 10px;
     -webkit-transform: skew(15deg) rotate(6deg);
@@ -450,7 +450,7 @@ form {
     width: 100%;
     height: 100%;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     /*  gap: 25px; */
     font-size: 1.5em;
@@ -470,13 +470,20 @@ input {
     margin: auto;
     font-weight: bold;
     letter-spacing: 5px;
-    color: rgb(26, 95, 74);
+    color: rgb(225, 75, 198);
 }
 
 input:focus-visible {
     outline: none;
-    background-color: rgba(186, 186, 134, 0.717);
+    background-color: rgba(186, 186, 134, 0.21);
     border-radius: 5px;
+}
+
+.labels {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 label {
@@ -487,9 +494,10 @@ label {
     align-items: start;
     gap: ;
     padding: 0;
+    color: gray;
 }
 
-dialog h2 {
+/* dialog#start h2 {
     background: none;
     color: inherit;
     text-shadow: none;
@@ -500,15 +508,17 @@ dialog h2 {
     align-self: end;
     transform: rotate(25deg);
     letter-spacing: 2px;
+    display: none;
 }
-
+ */
 .buttons {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     font-size: 1em;
-    margin-bottom: -15px;
-    align-items: center;
+    margin-bottom: 5px;
+    margin-right: -10px;
+    align-items: end;
 
     /* margin-top: 40px; */
 }
@@ -516,14 +526,16 @@ dialog h2 {
 .submit {
     position: relative;
     font-size: inherit;
-    border-radius: 50% 50% 40px;
+    padding-bottom: 5px;
+    color: gray;
+    /* border-radius: 50% 50% 40px;
     border-width: 0 2px px 0;
-    padding: 5px 1px 15px 5px;
+    padding: 5px 1px 15px 5px; */
 }
 
 .buttons>* {
     transition: 250ms;
-    border: 2px solid grey;
+    /* border: 2px solid grey; */
 
 }
 
@@ -537,6 +549,7 @@ form img {
     top: 20px;
     right: 15px;
     transform: skew(-15deg);
+    filter: drop-shadow(0px 0px 0px rgb(255, 255, 255)) invert(40%);
 }
 
 form button {
@@ -577,12 +590,12 @@ dialog {
 }
 
 /* Transition the :backdrop when the dialog modal is promoted to the top layer */
-dialog::backdrop {
+dialog#start::backdrop {
     background-color: transparent;
     transition: all 0.5s allow-discrete;
 }
 
-dialog:open::backdrop {
+dialog#start:open::backdrop {
     /* background-color: rgba(0, 0, 0, 0.111); */
     backdrop-filter: blur(2px);
 }

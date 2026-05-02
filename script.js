@@ -211,7 +211,7 @@ function UIcontroller() {
     function clickCell(event) {
         event.stopPropagation();
         if (game.getGameEnd()) {
-            showDialogGO();
+            /* showDialogGO(); */
             return
         }; // ide lehetne pakolni meg funkciokat h mi törtenjen ha vege.
         let button = event.target;
@@ -220,9 +220,9 @@ function UIcontroller() {
         latest = button.dataset.index;
         console.log(latest);
         game.playRound(button.dataset.row, button.dataset.column);
-        if (game.getGameEnd()) {
+        /* if (game.getGameEnd()) {
             showDialogGO();
-        };
+        }; */
         updateScreen();
     }
 
@@ -287,4 +287,6 @@ function UIcontroller() {
 }
 UIcontroller();
 
-//elromlott a nyeres kihirdetesss
+//animalni a nyereshirdetest
+//kiirni h akarsz-e ujra jatcani
+//animalni a lepesekett
