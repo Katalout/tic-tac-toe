@@ -371,32 +371,14 @@ border-left:0; */
     border-bottom: var(--cell-border);
 } */
 
-.cell.winner {
-    font-size: 150%;
-    font-weight: bold;
-}
+
 
 /* Open state of the dialog  */
-dialog#start:open {
+dialog:open {
     position: absolute;
     top: 30%;
     left: 15%;
     opacity: 1;
-    color: gray;
-    width: 450px;
-    height: 430px;
-    border: none;
-    /* box-shadow: 0 25px 35px -35px rgb(0, 0, 0); */
-    /* -webkit-box-shadow: 0 25px 25px -35px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 25px 25px -35px rgba(0, 0, 0, 0.25); */
-    z-index: 1;
-    /* prevent shadows falling behind containers with backgrounds */
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-
-    background-color: transparent;
-
 }
 
 dialog#start>div {
@@ -578,6 +560,15 @@ dialog {
     transition: all 0.5s allow-discrete;
     /* Equivalent to
   transition: all 0.7s allow-discrete; */
+    color: gray;
+    width: 450px;
+    height: 430px;
+    border: none;
+    z-index: 1;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
 }
 
 /* Before open state  */
@@ -586,13 +577,16 @@ dialog {
 @starting-style {
     dialog:open {
         opacity: 0;
+        top: 0%;
+        left: 30%;
+        transition: all 0.5s ease-out allow-discrete;
     }
 }
 
 /* Transition the :backdrop when the dialog modal is promoted to the top layer */
 dialog#start::backdrop {
     background-color: transparent;
-    transition: all 0.5s allow-discrete;
+    transition: all 0.5s ease-out allow-discrete;
 }
 
 dialog#start:open::backdrop {
@@ -609,10 +603,40 @@ because the nesting selector cannot represent pseudo-elements. */
     }
 }
 
+@keyframes bounce {
+    from {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pulse {
+    from {
+        font-weight: normal;
+        font-size: 100%;
+    }
+
+    to {
+        font-weight: bold;
+        font-size: 150%;
+    }
+}
+
+.fancy {
+    font-size: 1.6rem;
+    color: blue;
+    animation:
+        bounce 600ms alternate infinite cubic-bezier(.2, .65, .6, 1);
+}
+
+.cell.winner {
+    animation:
+        pulse 600ms alternate infinite ease;
+}
+
 /* 
--
-
--dialogs layout and colors
-
 -responsive (fullscreen?mobile?)with zooming (em instead px?)
  */
