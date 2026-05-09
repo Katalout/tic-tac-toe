@@ -2,8 +2,6 @@
     --cell-border: 2px solid rgb(93, 162, 223);
     --gridcolor: rgba(189, 229, 255, 0.912);
     --border: 3px solid rgba(128, 128, 128, 0.679);
-
-    /* hmm de akk hogyan legyen a füzetnek szelee */
 }
 
 @font-face {
@@ -27,16 +25,8 @@ body {
 
 body,
 html {
-    /*  width: 100vw;
-    height: 100vh;
-    background-color: whitesmoke; */
     font-family: 'mynerve', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
-}
-
-body {
-    /* display: flex;
-    justify-content: center; */
 }
 
 .container {
@@ -58,8 +48,6 @@ lehet akar csak  afüzet masik oldala i guess */
         linear-gradient(to bottom, var(--gridcolor) 1px, whitesmoke 1px);
 
     background-repeat: repeat-y, repeat, repeat;
-
-
 }
 
 .container::after {
@@ -79,8 +67,6 @@ lehet akar csak  afüzet masik oldala i guess */
     height: 25px;
     position: absolute;
     right: 20px;
-
-    /* box-sizing: border-box; */
     border-color: rgb(193, 193, 193) whitesmoke;
     border-style: ridge;
     border-width: 20px 1;
@@ -125,12 +111,6 @@ h3 {
 .title {
     margin-bottom: 73px;
     letter-spacing: 2px;
-    /* text-shadow: -1px -1px rgb(196, 196, 196); */
-    /* background-color: rgb(48, 85, 136);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    text-shadow: -2px -1px 3px rgba(245, 245, 245, 0.436); */
     line-height: 40px;
 }
 
@@ -148,14 +128,10 @@ h3 {
 }
 
 .text {
-    /* text-align: center;
-    margin-top: 42px;
-    margin-bottom: 30px; */
     line-height: 40px;
 }
 
-svg path {
-    /* filter: drop-shadow(-2px -1px 3px rgba(193, 114, 114, 0.671)); */
+.arrow path {
     filter: url(#myfilters);
 }
 
@@ -193,7 +169,6 @@ svg {}
 
 .resettext {
     letter-spacing: 2px;
-    /* text-shadow: -1px -1px rgb(196, 196, 196); */
     background-color: rgb(48, 85, 136);
     background-clip: text;
     -webkit-background-clip: text;
@@ -301,8 +276,6 @@ svg {}
 
 
 .cell:nth-child(2) {
-    /* border: var(--border);
-            border-color: transparent rgb(14, 29, 82); */
     border-left: var(--border);
     border-right: var(--border);
 }
@@ -313,25 +286,11 @@ svg {}
 }
 
 .cell:nth-child(6) {
-    /* border: var(--border); */
-    /* border-image:
-                linear-gradient(to right,
-                    gray 40px,
-                    rgba(0, 0, 0, 0)) 100 10;
-                radial-gradient(ellipse 100% 3px at 0 1px, gray 0% 50%, hsla(0, 0%, 0%, 0) 100%) 3;
-border-left:0; */
-    /* <svg viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"><line x1="1" y1="5" x2="5" y2="5" stroke="black" stroke-linecap="square" /></svg> */
     background: radial-gradient(110% 2px at 0% 1px, rgba(128, 128, 128, 0.679) 70%, transparent 100%), radial-gradient(115% 2px at 0% calc(100% - 1px), rgba(128, 128, 128, 0.679) 80%, transparent 100%);
     background-blend-mode: multiply;
-    ;
 }
 
 .cell:nth-child(8) {
-    /* border: var(--border);
-            border-image:
-                linear-gradient(to bottom,
-                    gray 40px,
-                    rgba(0, 0, 0, 0)) 10 100; */
     background: radial-gradient(2px 120% at 1px 0, rgba(128, 128, 128, 0.679) 80%, transparent 100%), radial-gradient(2px 105% at calc(100% - 1px) 0, rgba(128, 128, 128, 0.679) 85%, transparent 100%);
     background-blend-mode: multiply;
 }
@@ -341,37 +300,48 @@ border-left:0; */
 }
 
 
-.cell.X {
-    color: red;
+.cell.X path {
+    stroke: rgb(48, 85, 136);
 }
 
-.cell.O {
-    color: blue;
+.cell.O path {
+    stroke: rgb(128, 0, 60);
+}
+
+.cell path {
+    filter: url(#token);
 }
 
 .cell.latest {
     text-shadow: 1px 1px 3px rgb(148, 145, 145);
-    /* font-size: 140%; */
     font-weight: 200;
 }
 
-/* .cell[data-row="1"][data-column="1"] {
-    border: var(--cell-border);
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
 }
 
-.cell[data-row="0"][data-column="1"],
-.cell[data-row="2"][data-column="1"] {
-    border-left: var(--cell-border);
-    border-right: var(--cell-border);
+.cell.latest.O path {
+    stroke-dasharray: 570;
+    stroke-dashoffset: 570;
+    animation: dash 0.4s ease-in-out forwards;
 }
 
-.cell[data-row="1"][data-column="0"],
-.cell[data-row="1"][data-column="2"] {
-    border-top: var(--cell-border);
-    border-bottom: var(--cell-border);
-} */
+.cell.latest.X path {
+    stroke-dasharray: 160;
+    stroke-dashoffset: 160;
+    animation: dash 0.2s ease forwards;
+}
 
+.cell.latest.X path.first {
+    animation-delay: 0s;
+}
 
+.cell.latest.X path.second {
+    animation-delay: 0.3s;
+}
 
 /* Open state of the dialog  */
 dialog:open {
@@ -613,28 +583,36 @@ because the nesting selector cannot represent pseudo-elements. */
     }
 }
 
+@keyframes ee {
+
+    to {
+        font-size: 1.6rem;
+    }
+}
+
+
 @keyframes pulse {
     from {
-        font-weight: normal;
-        font-size: 100%;
+        /* font-weight: normal;
+        font-size: 100%; */
+        transform: none;
     }
 
     to {
-        font-weight: bold;
-        font-size: 150%;
+        transform: scale(1.2);
+        /* font-weight: bold;
+        font-size: 150%; */
     }
 }
 
 .fancy {
-    font-size: 1.6rem;
-    color: blue;
     animation:
-        bounce 600ms alternate infinite cubic-bezier(.2, .65, .6, 1);
+        ee 500ms 0.3s ease forwards;
 }
 
-.cell.winner {
+.cell.winner svg {
     animation:
-        pulse 600ms alternate infinite ease;
+        pulse 500ms 0.8s ease forwards;
 }
 
 /* 
