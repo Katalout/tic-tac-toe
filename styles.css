@@ -2,6 +2,7 @@
     --cell-border: 2px solid rgb(93, 162, 223);
     --gridcolor: rgba(189, 229, 255, 0.912);
     --border: 3px solid rgba(128, 128, 128, 0.679);
+    --minunit: min(8px, 1vw);
 }
 
 @font-face {
@@ -17,7 +18,7 @@
 body {
     background-color: rgb(165, 157, 137);
     margin: 0;
-    padding: 30px 0 30px 20px;
+    padding: 10px 0 10px 10px;
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
@@ -26,11 +27,14 @@ body {
 body,
 html {
     font-family: 'mynerve', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
+    font-size: calc(var(--minunit)*2);
+    /* var-ba tenni a min()-t es azt szorozgatni? hmm */
+    box-sizing: border-box;
 }
 
 .container {
-    padding: 95px 95px 0 135px;
+    padding: calc(var(--minunit)*11.5) calc(var(--minunit)*11) 0 calc(var(--minunit)*17);
+    /* az összes percentage padding fucked, meg a staplerek is fucked puszi */
     position: relative;
     border-radius: 15px 0 0 15px;
     box-sizing: border-box;
@@ -40,10 +44,10 @@ html {
 -lehetnek könyvek füzetek rapakolva
 lehet akar csak  afüzet masik oldala i guess */
     height: 100%;
-    background-position: 124px, -30px -30px, -33px -33px;
-    background-size: 40px 40px;
+    background-position: calc(var(--minunit)*16), var(--minunit) var(--minunit), var(--minunit) var(--minunit);
+    background-size: calc(var(--minunit)*5) calc(var(--minunit)*5);
     background-image:
-        linear-gradient(to right, transparent 0 4px, var(--gridcolor) 5px 7px, transparent 7px),
+        linear-gradient(to right, var(--gridcolor) 3px, transparent 3px),
         linear-gradient(to right, var(--gridcolor) 1px, transparent 1px),
         linear-gradient(to bottom, var(--gridcolor) 1px, whitesmoke 1px);
 
@@ -52,7 +56,7 @@ lehet akar csak  afüzet masik oldala i guess */
 
 .container::after {
     content: "";
-    width: 150px;
+    width: 15%;
     height: 100%;
     position: absolute;
     right: 0;
@@ -64,13 +68,12 @@ lehet akar csak  afüzet masik oldala i guess */
 .stapler {
     content: "";
     width: 1px;
-    height: 25px;
+    height: calc(var(--minunit)*4);
     position: absolute;
-    right: 20px;
+    right: 1.5%;
     border-color: rgb(193, 193, 193) whitesmoke;
     border-style: ridge;
-    border-width: 20px 1;
-    border-radius: 4px 4px 1px 1px;
+    border-width: calc(var(--minunit)) 1;
     background-color: rgb(175, 175, 175);
     -webkit-box-shadow: 3px 3px 15px 0px rgba(0, 0, 0, 0.37);
     box-shadow: 1px 2px 2px 0px rgba(0, 0, 0, 0.37);
@@ -96,10 +99,27 @@ lehet akar csak  afüzet masik oldala i guess */
     border-radius: 1px 1px 4px 4px;
 }
 
+/* h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 2.5em;
+}
+
+h3 {
+    font-size: 2em;
+}
+
+h4 {
+    font-size: 1.75em;
+} */
+
 h1,
 p,
 h2,
-h3 {
+h3,
+h4 {
     background-color: rgb(48, 85, 136);
     background-clip: text;
     -webkit-background-clip: text;
@@ -109,18 +129,18 @@ h3 {
 }
 
 .title {
-    margin-bottom: 73px;
-    letter-spacing: 2px;
-    line-height: 40px;
+    margin-bottom: ;
+    letter-spacing: calc(var(--minunit) * 0.3);
+    line-height: calc(var(--minunit) * 6);
 }
 
 .first {
     text-align: left;
+    margin-bottom: -5px;
 }
 
 .second {
     text-align: right;
-    font-size: 1.7em;
 }
 
 .title .game {
@@ -128,7 +148,7 @@ h3 {
 }
 
 .text {
-    line-height: 40px;
+    line-height: calc(var(--minunit) * 5);
 }
 
 .arrow path {
@@ -191,13 +211,14 @@ svg {}
 }
 
 .middle {
-    margin-left: 36px;
+    margin-left: calc(var(--minunit) * 4.1);
+    margin-top: calc(var(--minunit) * 8.1);
     display: grid;
     grid-template-columns: auto auto;
-    grid-template-rows: 169px 1fr;
+    grid-template-rows: 5fr 2fr;
     width: fit-content;
     align-items: end;
-    column-gap: 20px;
+    column-gap: calc(var(--minunit) * 5);
 }
 
 .logger {
@@ -213,8 +234,8 @@ svg {}
 
 .board {
     display: grid;
-    grid-template-columns: 76px 83px 83px;
-    grid-template-rows: 80px 80px 82px;
+    grid-template-columns: repeat(3, calc(var(--minunit) * 10));
+    grid-template-rows: repeat(3, calc(var(--minunit) * 10));
     grid-area: 1/1/3/2;
     width: max-content;
     height: max-content;
@@ -230,7 +251,7 @@ svg {}
     border: none;
 }
 
-.cell:nth-child(-2n+4) {
+/* .cell:nth-child(-2n+4) {
     position: relative;
 }
 
@@ -238,8 +259,6 @@ svg {}
 .cell:nth-child(-2n+4)::before {
     content: "";
     position: absolute;
-    /* */
-
     border: 1px solid rgba(128, 128, 128, 0.659);
 }
 
@@ -273,7 +292,7 @@ svg {}
 .cell:nth-child(4)::after {
     bottom: -3px;
 }
-
+ */
 
 .cell:nth-child(2) {
     border-left: var(--border);
@@ -521,7 +540,7 @@ form button {
 button span {
     font-weight: 900;
     text-shadow: 1px 1px currentColor;
-    font-size: 1.1rem;
+    font-size: 1.1em;
 }
 
 /* Closed state of the dialog   */
@@ -586,7 +605,7 @@ because the nesting selector cannot represent pseudo-elements. */
 @keyframes ee {
 
     to {
-        font-size: 1.6rem;
+        font-size: 2em;
     }
 }
 
