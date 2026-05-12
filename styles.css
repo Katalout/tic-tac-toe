@@ -136,11 +136,12 @@ h4 {
 
 .first {
     text-align: left;
-    margin-bottom: -5px;
 }
 
 .second {
     text-align: right;
+    position: relative;
+    top: -5px;
 }
 
 .title .game {
@@ -212,7 +213,7 @@ svg {}
 
 .middle {
     margin-left: calc(var(--minunit) * 4.1);
-    margin-top: calc(var(--minunit) * 8.1);
+    margin-top: calc(var(--minunit) * 7.5);
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: 5fr 2fr;
@@ -635,5 +636,11 @@ because the nesting selector cannot represent pseudo-elements. */
 }
 
 /* 
--responsive (fullscreen?mobile?)with zooming (em instead px?)
+-responsive (fullscreen?mobile?)with zooming
+-why does fancy ee animation at end push it down? has to do with grid-rows 5fr-2fr somehow
+-dialog dimensions not responsive
+-should wrap rightside text on smaller screens
+-should fix stapler positioning and ridge
+
+sigh
  */
